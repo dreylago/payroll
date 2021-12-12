@@ -17,7 +17,10 @@ class HrPayrollStructure(models.Model):
 
     @api.model
     def _get_parent(self):
-        return self.env.ref("payroll.structure_base", False)
+        base_parent = self.env[self._name].search([('code', '=', 'BASE')])
+        if len(base_parent)>0:
+            return base_parent[0]
+        return None
 
     name = fields.Char(required=True)
     code = fields.Char(string="Reference", required=True)
