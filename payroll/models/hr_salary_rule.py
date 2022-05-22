@@ -3,7 +3,7 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.safe_eval import safe_eval
-
+import calendar
 
 class HrSalaryRule(models.Model):
     _name = "hr.salary.rule"
@@ -192,6 +192,7 @@ class HrSalaryRule(models.Model):
                 )
         else:
             try:
+                localdict["monthcalendar"] = calendar.monthcalendar
                 safe_eval(
                     self.amount_python_compute, localdict, mode="exec", nocopy=True
                 )
@@ -200,10 +201,10 @@ class HrSalaryRule(models.Model):
                     "result_qty" in localdict and localdict["result_qty"] or 1.0,
                     "result_rate" in localdict and localdict["result_rate"] or 100.0,
                 )
-            except Exception:
+            except Exception as e:
                 raise UserError(
-                    _("Wrong python code defined for salary rule %s (%s).")
-                    % (self.name, self.code)
+                    _("Wrong python code defined for salary rule %s (%s). [%s]")
+                    % (self.name, self.code, e)
                 )
 
     def _satisfy_condition(self, localdict):
