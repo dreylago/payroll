@@ -50,6 +50,10 @@ class HrPayslipRun(models.Model):
         "are refund payslips.",
     )
 
+    company_id = fields.Many2one(
+            "res.company", string="Company", default=lambda self: self.env.company,
+    )
+
     def draft_payslip_run(self):
         return self.write({"state": "draft"})
 
