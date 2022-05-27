@@ -8,8 +8,9 @@
                 <field name="name" />
                 <field name="code" />
                 <field name="category_id" />
-                <field name="sequence" invisible="1" />
                 <field name="register_id" />
+                <field name="sequence"/>
+                <field name="amount_select"/>
             </tree>
         </field>
     </record>

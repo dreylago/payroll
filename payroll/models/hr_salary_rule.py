@@ -4,6 +4,9 @@ from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.safe_eval import safe_eval
 import calendar
+import importlib
+import dateutil
+import datetime
 
 class HrSalaryRule(models.Model):
     _name = "hr.salary.rule"
@@ -192,7 +195,13 @@ class HrSalaryRule(models.Model):
                 )
         else:
             try:
+                localdict["calendar"] = importlib.import_module("calendar")
                 localdict["monthcalendar"] = calendar.monthcalendar
+                localdict["monthrange"] = calendar.monthrange
+                localdict["datetime"] = importlib.import_module("datetime")
+                localdict["date"] = datetime.date
+                localdict["timedelta"] = datetime.timedelta
+                localdict["relativedelta"] = dateutil.relativedelta.relativedelta
                 safe_eval(
                     self.amount_python_compute, localdict, mode="exec", nocopy=True
                 )

@@ -467,7 +467,7 @@ msgstr "Creado en"
 #: model:ir.model.fields,field_description:payroll.field_hr_payslip__credit_note
 #: model:ir.model.fields,field_description:payroll.field_hr_payslip_run__credit_note
 msgid "Credit Note"
-msgstr ""
+msgstr "Nota de crédito"
 
 #. module: payroll
 #: model:ir.model.fields,field_description:payroll.field_hr_payslip__date_from
