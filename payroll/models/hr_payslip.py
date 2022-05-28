@@ -8,7 +8,7 @@ from pytz import timezone
 
 from odoo import _, api, fields, models, tools
 from odoo.exceptions import UserError, ValidationError
-
+import logging
 
 # These classes are used in the _get_payslip_lines() method
 class BrowsableObject(object):
@@ -251,7 +251,9 @@ class HrPayslip(models.Model):
 
     def action_payslip_done(self):
         if not self.env.context.get("without_compute_sheet"):
+            logging.warning("compute sheet")
             self.compute_sheet()
+        logging.warning("write")
         return self.write({"state": "done"})
 
     def action_payslip_cancel(self):
@@ -261,16 +263,20 @@ class HrPayslip(models.Model):
 
     def refund_sheet(self):
         for payslip in self:
+            logging.warning("init refund payslip")
             copied_payslip = payslip.copy(
                 {"credit_note": True, "name": _("Refund: %s") % payslip.name}
             )
             number = copied_payslip.number or self.env["ir.sequence"].next_by_code(
                 "salary.slip"
             )
+            logging.info(f"write number {number}")
             copied_payslip.write({"number": number})
+            logging.warning("action_payslip_done")
             copied_payslip.with_context(
-                without_compute_sheet=True
+                without_compute_sheet=False
             ).action_payslip_done()
+            logging.warning("done refund payslip")
         formview_ref = self.env.ref("payroll.hr_payslip_view_form", False)
         treeview_ref = self.env.ref("payroll.hr_payslip_view_tree", False)
         return {
