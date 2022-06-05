@@ -33,6 +33,7 @@
         "views/report_payslipdetails.xml",
         "report/report.xml",
         "views/res_config_settings_views.xml",
+        "wizard/hr_rule_total_report_views.xml",
     ],
     "demo": ["demo/hr_payroll_demo.xml"],
     "application": True,

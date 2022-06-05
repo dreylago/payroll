@@ -240,6 +240,13 @@ class HrSalaryRule(models.Model):
                 )
         else:  # python code
             try:
+                localdict["calendar"] = importlib.import_module("calendar")
+                localdict["monthcalendar"] = calendar.monthcalendar
+                localdict["monthrange"] = calendar.monthrange
+                localdict["datetime"] = importlib.import_module("datetime")
+                localdict["date"] = datetime.date
+                localdict["timedelta"] = datetime.timedelta
+                localdict["relativedelta"] = dateutil.relativedelta.relativedelta
                 safe_eval(self.condition_python, localdict, mode="exec", nocopy=True)
                 return "result" in localdict and localdict["result"] or False
             except Exception:

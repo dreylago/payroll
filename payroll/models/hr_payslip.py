@@ -214,7 +214,7 @@ class HrPayslip(models.Model):
         "hr.payslip.run",
         string="Payslip Batches",
         readonly=True,
-        copy=False,
+        copy=True,
         states={"draft": [("readonly", False)]},
     )
     payslip_count = fields.Integer(
